@@ -11,23 +11,30 @@ export default class extends Controller {
   }
 
   handleKeydown(event) {
-    if (["Enter", "Tab", ","].includes(event.key)) {
-      const value = this.inputTarget.value.trim()
+    const value = this.inputTarget.value.trim()
 
-      if (event.key === "Enter" && value === "") {
-        if (this.selectedCount() > 0) {
-          event.preventDefault()
-          this.formTarget.requestSubmit()
-        }
-
-        return
-      }
-
+    if (event.key === "Tab" || event.key === ",") {
       if (value !== "") {
         event.preventDefault()
         this.addTag(value)
         this.inputTarget.value = ""
         this.refresh()
+      }
+
+      return
+    }
+
+    if (event.key === "Enter") {
+      event.preventDefault()
+
+      if (value !== "") {
+        this.addTag(value)
+        this.inputTarget.value = ""
+        this.refresh()
+      }
+
+      if (this.selectedCount() > 0) {
+        this.formTarget.requestSubmit()
       }
     }
   }
@@ -39,6 +46,10 @@ export default class extends Controller {
     this.addTag(value)
     this.inputTarget.value = ""
     this.refresh()
+  }
+
+  focusInput() {
+    this.inputTarget.focus()
   }
 
   toggle(event) {
@@ -100,10 +111,11 @@ export default class extends Controller {
     this.renderTags()
     this.countTarget.textContent = this.selectedCount()
     this.submitTarget.disabled = this.selectedCount() === 0
+    this.inputTarget.placeholder = this.tags.length === 0 ? "e.g. tomato, garlic, chicken" : ""
   }
 
   renderTags() {
-    this.tagsTarget.innerHTML = ""
+    this.tagsTarget.querySelectorAll(".chip").forEach((chip) => chip.remove())
 
     this.tags.forEach((tag, index) => {
       const chip = document.createElement("div")
@@ -136,7 +148,7 @@ export default class extends Controller {
       selectedInput.value = tag.selected
       chip.appendChild(selectedInput)
 
-      this.tagsTarget.appendChild(chip)
+      this.tagsTarget.insertBefore(chip, this.inputTarget)
     })
   }
 }

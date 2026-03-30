@@ -15,19 +15,19 @@
       </header>
 
       <%= form_with url: root_path, method: :get, class: "home-content", data: { ingredient_tags_target: "form" } do %>
-        <div class="panel-grid">
-          <section class="panel">
-            <div class="panel-head">
-              <div>
-                <h2>Search ingredients</h2>
-                <p>Type at least 3 characters, then press Enter, Tab or comma.</p>
-              </div>
+        <section class="panel">
+          <div class="panel-head">
+            <div>
+              <h2>Search ingredients</h2>
+              <p>Type at least 3 characters. Use Tab or comma to add an ingredient, then press Enter to search.</p>
             </div>
+          </div>
 
-            <label for="ingredients-input" class="field-label">Ingredient</label>
+          <label for="ingredients-input" class="field-label">Ingredients</label>
+          <div class="tag-field" data-ingredient-tags-target="tags" data-action="click->ingredient-tags#focusInput">
             <input
               id="ingredients-input"
-              class="ingredient-input"
+              class="tag-input"
               type="text"
               placeholder="e.g. tomato, garlic, chicken"
               minlength="3"
@@ -35,38 +35,23 @@
               data-ingredient-tags-target="input"
               data-action="keydown->ingredient-tags#handleKeydown blur->ingredient-tags#handleBlur"
             >
+          </div>
 
-            <div class="actions">
-              <button
-                type="submit"
-                class="action-button search-button"
-                data-ingredient-tags-target="submit"
-                <%= "disabled" if @ingredients.empty? %>
-              >
-                Search Recipe
-              </button>
-            </div>
-          </section>
+          <div class="actions">
+            <button type="button" class="action-button clear-button" data-action="click->ingredient-tags#clearAll">
+              Clear all
+            </button>
 
-          <section class="panel">
-            <div class="panel-head">
-              <div>
-                <h2>Selected ingredients</h2>
-                <p>Click a chip to enable or disable it. Use x to remove it.</p>
-              </div>
-            </div>
-
-            <div class="selected-box">
-              <div class="chips" data-ingredient-tags-target="tags" aria-live="polite"></div>
-            </div>
-
-            <div class="actions">
-              <button type="button" class="action-button clear-button" data-action="click->ingredient-tags#clearAll">
-                Clear all
-              </button>
-            </div>
-          </section>
-        </div>
+            <button
+              type="submit"
+              class="action-button search-button"
+              data-ingredient-tags-target="submit"
+              <%= "disabled" if @ingredients.empty? %>
+            >
+              Search Recipe
+            </button>
+          </div>
+        </section>
 
         <section class="panel">
           <div class="panel-head">
