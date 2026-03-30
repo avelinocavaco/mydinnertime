@@ -16,15 +16,10 @@
 
       <%= form_with url: root_path, method: :get, class: "home-content", data: { ingredient_tags_target: "form" } do %>
         <section class="panel">
-          <div class="panel-head">
-            <div>
-              <h2>Search ingredients</h2>
-              <p>Type at least 3 characters. Use Tab or comma to add an ingredient, then press Enter to search.</p>
-            </div>
-          </div>
-
           <label for="ingredients-input" class="field-label">Ingredients</label>
-          <div class="tag-field" data-ingredient-tags-target="tags" data-action="click->ingredient-tags#focusInput">
+          <p class="field-help">Type at least 3 characters. Use Tab or comma to add an ingredient, then press Enter to search.</p>
+          <div class="tag-field" data-action="click->ingredient-tags#focusInput">
+            <div class="chips" data-ingredient-tags-target="chips"></div>
             <input
               id="ingredients-input"
               class="tag-input"
@@ -54,13 +49,7 @@
         </section>
 
         <section class="panel">
-          <div class="panel-head">
-            <div>
-              <h2>Recipes</h2>
-              <p>Recipe cards will appear here after search.</p>
-            </div>
-          </div>
-
+          <h2>Recipes</h2>
           <div class="results-placeholder">Results area</div>
         </section>
       <% end %>
