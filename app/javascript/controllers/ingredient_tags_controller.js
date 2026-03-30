@@ -6,7 +6,7 @@ export default class extends Controller {
 
   connect() {
     this.tags = []
-    this.initialTagsValue.forEach((name) => this.addTag(name))
+    this.initialTagsValue.forEach((tag) => this.addTag(tag))
     this.refresh()
   }
 
@@ -68,21 +68,23 @@ export default class extends Controller {
     this.inputTarget.focus()
   }
 
-  addTag(name) {
+  addTag(tagData) {
+    const name = typeof tagData === "string" ? tagData : tagData.name
+    const selected = typeof tagData === "string" ? true : tagData.selected !== false
     const trimmed = name.trim()
     const normalized = this.normalize(trimmed)
     if (normalized.length < 3) return
 
     const existingTag = this.tags.find((tag) => tag.normalized === normalized)
     if (existingTag) {
-      existingTag.selected = true
+      existingTag.selected = selected
       return
     }
 
     this.tags.push({
       name: trimmed,
       normalized,
-      selected: true
+      selected
     })
   }
 
@@ -122,13 +124,17 @@ export default class extends Controller {
       remove.textContent = "x"
       chip.appendChild(remove)
 
-      if (tag.selected) {
-        const input = document.createElement("input")
-        input.type = "hidden"
-        input.name = "ingredients[]"
-        input.value = tag.name
-        chip.appendChild(input)
-      }
+      const nameInput = document.createElement("input")
+      nameInput.type = "hidden"
+      nameInput.name = "ingredients[]"
+      nameInput.value = tag.name
+      chip.appendChild(nameInput)
+
+      const selectedInput = document.createElement("input")
+      selectedInput.type = "hidden"
+      selectedInput.name = "ingredient_selected[]"
+      selectedInput.value = tag.selected
+      chip.appendChild(selectedInput)
 
       this.tagsTarget.appendChild(chip)
     })
