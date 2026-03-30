@@ -1,0 +1,84 @@
+<% content_for :title, "Mydinnertime" %>
+
+<section class="home-page">
+  <div class="home-shell">
+    <div data-controller="ingredient-tags" data-ingredient-tags-initial-tags-value="<%= json_escape(@ingredients.to_json) %>">
+      <header class="hero panel">
+        <div>
+          <p class="panel-label">Recipe matching by ingredients</p>
+          <h1>MyDinnerTime</h1>
+        </div>
+        <div class="hero-badge">
+          <span>Selected ingredients</span>
+          <strong data-ingredient-tags-target="count">0</strong>
+        </div>
+      </header>
+
+      <%= form_with url: root_path, method: :get, class: "home-content", data: { ingredient_tags_target: "form" } do %>
+        <div class="panel-grid">
+          <section class="panel">
+            <div class="panel-head">
+              <div>
+                <h2>Search ingredients</h2>
+                <p>Type at least 3 characters, then press Enter, Tab or comma.</p>
+              </div>
+            </div>
+
+            <label for="ingredients-input" class="field-label">Ingredient</label>
+            <input
+              id="ingredients-input"
+              class="ingredient-input"
+              type="text"
+              placeholder="e.g. tomato, garlic, chicken"
+              minlength="3"
+              autocomplete="off"
+              data-ingredient-tags-target="input"
+              data-action="keydown->ingredient-tags#handleKeydown blur->ingredient-tags#handleBlur"
+            >
+
+            <div class="actions">
+              <button
+                type="submit"
+                class="action-button search-button"
+                data-ingredient-tags-target="submit"
+                <%= "disabled" if @ingredients.empty? %>
+              >
+                Search
+              </button>
+            </div>
+          </section>
+
+          <section class="panel">
+            <div class="panel-head">
+              <div>
+                <h2>Selected ingredients</h2>
+                <p>Click a chip to enable or disable it. Use x to remove it.</p>
+              </div>
+            </div>
+
+            <div class="selected-box">
+              <div class="chips" data-ingredient-tags-target="tags" aria-live="polite"></div>
+            </div>
+
+            <div class="actions">
+              <button type="button" class="action-button clear-button" data-action="click->ingredient-tags#clearAll">
+                Clear all
+              </button>
+            </div>
+          </section>
+        </div>
+
+        <section class="panel">
+          <div class="panel-head">
+            <div>
+              <h2>Recipes</h2>
+              <p>Recipe cards will appear here after search.</p>
+            </div>
+          </div>
+
+          <div class="results-placeholder">Results area</div>
+        </section>
+      <% end %>
+    </div>
+  </div>
+</section>

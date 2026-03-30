@@ -1,0 +1,27 @@
+require "test_helper"
+
+class HomeControllerTest < ActionDispatch::IntegrationTest
+  test "should get index" do
+    get root_url
+
+    assert_response :success
+    assert_select "h1", "MyDinnerTime"
+    assert_select "button", "Search"
+  end
+
+  test "should keep searched ingredients in tags" do
+    get root_url, params: { ingredients: ["tomate", "manjericao"] }
+
+    assert_response :success
+    assert_includes @response.body, "tomate"
+    assert_includes @response.body, "manjericao"
+  end
+
+  test "should ignore ingredients shorter than three characters" do
+    get root_url, params: { ingredients: ["to", "egg"] }
+
+    assert_response :success
+    assert_not_includes @response.body, 'value="to"'
+    assert_includes @response.body, 'value="egg"'
+  end
+end
