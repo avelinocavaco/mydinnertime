@@ -13,7 +13,7 @@ class Recipe < ApplicationRecord
     match_clauses = selected_names.map { "ingredients.name LIKE ?" }.join(" OR ")
     match_values = selected_names.map { |name| "%#{sanitize_sql_like(name)}%" }
     match_condition_sql = sanitize_sql_array([match_clauses, *match_values])
-    total_count_sql = "(SELECT COUNT(*) FROM recipe_ingredients ri WHERE ri.recipe_id = recipes.id)"
+    total_count_sql = "(SELECT COUNT(DISTINCT ri.ingredient_id) FROM recipe_ingredients ri WHERE ri.recipe_id = recipes.id)"
     match_ratio_sql = "COUNT(DISTINCT ingredients.id)::float / NULLIF(#{total_count_sql}, 0)"
 
     ranking_rows = joins(recipe_ingredients: :ingredient)
@@ -39,7 +39,9 @@ class Recipe < ApplicationRecord
       recipe = recipes_by_id[row.id]
       next unless recipe
 
-      ordered_ingredients = recipe.recipe_ingredients.sort_by(&:sequence)
+      ordered_ingredients = recipe.recipe_ingredients
+        .sort_by(&:sequence)
+        .uniq { |item| item.ingredient_id } # este unique é para não mostrar os ingredientes em duplicados na receita
       matched_count = row.read_attribute(:matched_count).to_i
       total_count = row.read_attribute(:total_count).to_i
 
