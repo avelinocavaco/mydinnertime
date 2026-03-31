@@ -10,11 +10,14 @@ class Recipe < ApplicationRecord
     selected_names = names.map { |name| name.to_s.downcase.strip }.reject(&:blank?).uniq
     return [] if selected_names.empty?
 
+    match_clauses = selected_names.map { "ingredients.name LIKE ?" }.join(" OR ")
+    match_values = selected_names.map { |name| "%#{sanitize_sql_like(name)}%" }
+    match_condition_sql = sanitize_sql_array([match_clauses, *match_values])
     total_count_sql = "(SELECT COUNT(*) FROM recipe_ingredients ri WHERE ri.recipe_id = recipes.id)"
     match_ratio_sql = "COUNT(DISTINCT ingredients.id)::float / NULLIF(#{total_count_sql}, 0)"
 
     ranking_rows = joins(recipe_ingredients: :ingredient)
-      .where(ingredients: { name: selected_names })
+      .where(match_condition_sql)
       .group("recipes.id", "recipes.ratings")
       .select(
         "recipes.id",

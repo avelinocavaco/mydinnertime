@@ -73,7 +73,7 @@
 
                     <div class="recipe-ingredients">
                       <% result.ingredients.each do |item| %>
-                        <span class="recipe-ingredient <%= "is-match" if @selected_ingredient_names.include?(item.ingredient.name) %>">
+                        <span class="recipe-ingredient <%= "is-match" if @selected_ingredient_names.any? { |name| item.ingredient.name.include?(name) } %>">
                           <%= item.ingredient.name %>
                         </span>
                       <% end %>
