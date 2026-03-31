@@ -54,7 +54,7 @@
           <% else %>
             <div class="recipe-list">
               <% @recipes.each do |result| %>
-                <article class="recipe-card">
+                <article class="recipe-card" data-controller="recipe-card" data-expanded="false">
                   <img
                     src="<%= result.recipe.image_url %>"
                     alt="<%= result.recipe.title %>"
@@ -77,6 +77,58 @@
                           <%= item.ingredient.name %>
                         </span>
                       <% end %>
+                    </div>
+
+                    <button type="button" class="recipe-toggle" data-action="recipe-card#toggle" data-recipe-card-target="toggle" aria-expanded="false">
+                      <span data-recipe-card-target="toggleLabel">Show details</span>
+                    </button>
+
+                    <div class="recipe-details" data-recipe-card-target="details" hidden>
+                      <div class="recipe-detail-grid">
+                        <% if result.recipe.author.present? %>
+                          <div class="recipe-detail-item">
+                            <span class="recipe-detail-label">Author</span>
+                            <strong><%= result.recipe.author %></strong>
+                          </div>
+                        <% end %>
+
+                        <% if result.recipe.category.present? %>
+                          <div class="recipe-detail-item">
+                            <span class="recipe-detail-label">Category</span>
+                            <strong><%= result.recipe.category %></strong>
+                          </div>
+                        <% end %>
+
+                        <% if result.recipe.cuisine.present? %>
+                          <div class="recipe-detail-item">
+                            <span class="recipe-detail-label">Cuisine</span>
+                            <strong><%= result.recipe.cuisine %></strong>
+                          </div>
+                        <% end %>
+
+                        <% if result.recipe.prep_time.present? %>
+                          <div class="recipe-detail-item">
+                            <span class="recipe-detail-label">Prep time</span>
+                            <strong><%= result.recipe.prep_time %> min</strong>
+                          </div>
+                        <% end %>
+
+                        <% if result.recipe.cook_time.present? %>
+                          <div class="recipe-detail-item">
+                            <span class="recipe-detail-label">Cook time</span>
+                            <strong><%= result.recipe.cook_time %> min</strong>
+                          </div>
+                        <% end %>
+                      </div>
+
+                      <div class="recipe-preparation">
+                        <h4>Preparation</h4>
+                        <ol class="recipe-preparation-list">
+                          <% result.preparation_lines.each do |item| %>
+                            <li><%= item.preparation %></li>
+                          <% end %>
+                        </ol>
+                      </div>
                     </div>
                   </div>
                 </article>

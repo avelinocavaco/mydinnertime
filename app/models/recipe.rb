@@ -1,5 +1,5 @@
 class Recipe < ApplicationRecord
-  SearchResult = Struct.new(:recipe, :matched_count, :total_count, :match_ratio, :ingredients, keyword_init: true)
+  SearchResult = Struct.new(:recipe, :matched_count, :total_count, :match_ratio, :ingredients, :preparation_lines, keyword_init: true)
 
   has_many :recipe_ingredients, dependent: :destroy
   has_many :ingredients, through: :recipe_ingredients
@@ -39,8 +39,8 @@ class Recipe < ApplicationRecord
       recipe = recipes_by_id[row.id]
       next unless recipe
 
-      ordered_ingredients = recipe.recipe_ingredients
-        .sort_by(&:sequence)
+      ordered_lines = recipe.recipe_ingredients.sort_by(&:sequence)
+      ordered_ingredients = ordered_lines
         .uniq { |item| item.ingredient_id } # este unique é para não mostrar os ingredientes em duplicados na receita
       matched_count = row.read_attribute(:matched_count).to_i
       total_count = row.read_attribute(:total_count).to_i
@@ -50,7 +50,8 @@ class Recipe < ApplicationRecord
         matched_count: matched_count,
         total_count: total_count,
         match_ratio: total_count > 0 ? matched_count.to_f / total_count : 0.0,
-        ingredients: ordered_ingredients
+        ingredients: ordered_ingredients,
+        preparation_lines: ordered_lines
       )
     end
   end
