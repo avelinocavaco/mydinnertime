@@ -26,6 +26,7 @@ class Recipe < ApplicationRecord
         Arel.sql("#{match_ratio_sql} DESC"),
         Arel.sql("COALESCE(recipes.ratings, 0) DESC")
       )
+      .limit(100)
 
     recipes_by_id = where(id: ranking_rows.map(&:id))
       .preload(recipe_ingredients: :ingredient)
@@ -43,7 +44,7 @@ class Recipe < ApplicationRecord
         recipe: recipe,
         matched_count: matched_count,
         total_count: total_count,
-        match_ratio: matched_count.to_f / total_count,
+        match_ratio: total_count > 0 ? matched_count.to_f / total_count : 0.0,
         ingredients: ordered_ingredients
       )
     end
