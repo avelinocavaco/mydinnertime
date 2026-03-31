@@ -1,3 +1,9 @@
+:root {
+  --navy: #0f2240;
+  --muted: #6b7f9e;
+  --border: #c8d6ea;
+}
+
 .home-page { min-height: 100vh; padding: 1rem; background: linear-gradient(180deg, #fff8ef 0%, #fff4e8 45%, #fdfaf5 100%); }
 .home-shell { max-width: 1140px; margin: 0 auto; }
 .home-content { display: grid; gap: 1.25rem; }
@@ -23,10 +29,10 @@
 }
 
 .hero h1,
-.panel h2 { margin: 0; color: #0f2240; }
+.panel h2 { margin: 0; color: var(--navy); }
 .hero h1 { font-size: clamp(2rem, 4vw, 3rem); }
 .hero p,
-.panel p { margin: 0.35rem 0 0; color: #6b7f9e; }
+.panel p { margin: 0.35rem 0 0; color: var(--muted); }
 
 .panel-label,
 .field-label {
@@ -51,8 +57,8 @@
   text-align: center;
 }
 
-.hero-badge span { display: block; font-size: 0.72rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: #6b7f9e; }
-.hero-badge strong { display: block; margin-top: 0.25rem; font-size: 2rem; color: #0f2240; }
+.hero-badge span { display: block; font-size: 0.72rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); }
+.hero-badge strong { display: block; margin-top: 0.25rem; font-size: 2rem; color: var(--navy); }
 
 .tag-field {
   flex-wrap: wrap;
@@ -60,14 +66,14 @@
   gap: 0.5rem;
   min-height: 56px;
   padding: 0.75rem;
-  border: 1px solid #c8d6ea;
+  border: 1px solid var(--border);
   background: #fff;
   cursor: text;
 }
 
 .chips { flex-wrap: wrap; gap: 0.5rem; align-items: center; }
 .actions { justify-content: flex-end; gap: 0.75rem; margin-top: 0.75rem; }
-.field-help { flex: 1; margin: 0; color: #6b7f9e; }
+.field-help { margin: 0; color: var(--muted); }
 
 .tag-input {
   flex: 1 1 180px;
@@ -76,7 +82,7 @@
   border: 0;
   outline: 0;
   background: transparent;
-  color: #0f2240;
+  color: var(--navy);
 }
 
 .action-button {
@@ -88,16 +94,16 @@
 }
 
 .action-button:disabled { cursor: not-allowed; opacity: 0.5; }
-.clear-button { background: #e2e8f0; color: #0f2240; }
-.search-button { background: #0f2240; color: #fff; }
+.clear-button { background: #e2e8f0; color: var(--navy); }
+.search-button { background: var(--navy); color: #fff; }
 
 .results-placeholder {
   min-height: 160px;
   margin-top: 0.75rem;
   padding: 1.5rem;
-  border: 1px dashed #c8d6ea;
+  border: 1px dashed var(--border);
   background: #f8fbff;
-  color: #6b7f9e;
+  color: var(--muted);
   display: flex;
   align-items: center;
   justify-content: center;

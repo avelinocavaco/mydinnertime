@@ -1,9 +1,8 @@
 <% content_for :title, "Mydinnertime" %>
 
 <section class="home-page">
-  <div class="home-shell">
-    <div data-controller="ingredient-tags" data-ingredient-tags-initial-tags-value="<%= json_escape(@ingredients.to_json) %>">
-      <header class="hero panel">
+  <div class="home-shell" data-controller="ingredient-tags" data-ingredient-tags-initial-tags-value="<%= json_escape(@ingredients.to_json) %>">
+    <header class="hero panel">
         <div>
           <p class="panel-label">Recipe matching by ingredients</p>
           <h1>MyDinnerTime</h1>
@@ -52,7 +51,6 @@
           <h2>Recipes</h2>
           <div class="results-placeholder">Results area</div>
         </section>
-      <% end %>
-    </div>
+    <% end %>
   </div>
 </section>
