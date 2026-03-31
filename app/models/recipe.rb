@@ -10,32 +10,34 @@ class Recipe < ApplicationRecord
     selected_names = names.map { |name| name.to_s.downcase.strip }.reject(&:blank?).uniq
     return [] if selected_names.empty?
 
-    matched_count_sql = sanitize_sql_array([
-      "SUM(CASE WHEN ingredients.name IN (?) THEN 1 ELSE 0 END)",
-      selected_names
-    ])
-    total_count_sql = "COUNT(recipe_ingredients.id)"
-    match_ratio_sql = "(#{matched_count_sql})::float / #{total_count_sql}"
+    total_count_sql = "(SELECT COUNT(*) FROM recipe_ingredients ri WHERE ri.recipe_id = recipes.id)"
+    match_ratio_sql = "COUNT(DISTINCT ingredients.id)::float / NULLIF(#{total_count_sql}, 0)"
 
-    recipes = joins(recipe_ingredients: :ingredient)
+    ranking_rows = joins(recipe_ingredients: :ingredient)
+      .where(ingredients: { name: selected_names })
+      .group("recipes.id", "recipes.ratings")
       .select(
-        "recipes.*",
-        "#{matched_count_sql} AS matched_count",
+        "recipes.id",
+        "COUNT(DISTINCT ingredients.id) AS matched_count",
         "#{total_count_sql} AS total_count"
       )
-      .group("recipes.id")
-      .having("#{matched_count_sql} > 0")
       .order(
-        Arel.sql("#{matched_count_sql} DESC"),
+        Arel.sql("COUNT(DISTINCT ingredients.id) DESC"),
         Arel.sql("#{match_ratio_sql} DESC"),
         Arel.sql("COALESCE(recipes.ratings, 0) DESC")
       )
-      .preload(recipe_ingredients: :ingredient)
 
-    recipes.map do |recipe|
+    recipes_by_id = where(id: ranking_rows.map(&:id))
+      .preload(recipe_ingredients: :ingredient)
+      .index_by(&:id)
+
+    ranking_rows.filter_map do |row|
+      recipe = recipes_by_id[row.id]
+      next unless recipe
+
       ordered_ingredients = recipe.recipe_ingredients.sort_by(&:sequence)
-      matched_count = recipe.read_attribute(:matched_count).to_i
-      total_count = recipe.read_attribute(:total_count).to_i
+      matched_count = row.read_attribute(:matched_count).to_i
+      total_count = row.read_attribute(:total_count).to_i
 
       SearchResult.new(
         recipe: recipe,
