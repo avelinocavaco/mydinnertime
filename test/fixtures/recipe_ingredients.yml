@@ -1,13 +1,65 @@
-# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
-
-one:
-  recipe: one
-  ingredient: one
+tomato_soup_tomato:
+  recipe: tomato_soup
+  ingredient: tomato
   sequence: 1
-  preparation: MyString
+  preparation: chopped
 
-two:
-  recipe: two
-  ingredient: two
+tomato_soup_garlic:
+  recipe: tomato_soup
+  ingredient: garlic
+  sequence: 2
+  preparation: minced
+
+garlic_chicken_garlic:
+  recipe: garlic_chicken
+  ingredient: garlic
   sequence: 1
-  preparation: MyString
+  preparation: minced
+
+garlic_chicken_chicken:
+  recipe: garlic_chicken
+  ingredient: chicken
+  sequence: 2
+  preparation: diced
+
+garlic_chicken_butter:
+  recipe: garlic_chicken
+  ingredient: butter
+  sequence: 3
+  preparation: melted
+
+tomato_pasta_tomato:
+  recipe: tomato_pasta
+  ingredient: tomato
+  sequence: 1
+  preparation: crushed
+
+tomato_pasta_garlic:
+  recipe: tomato_pasta
+  ingredient: garlic
+  sequence: 2
+  preparation: minced
+
+tomato_pasta_basil:
+  recipe: tomato_pasta
+  ingredient: basil
+  sequence: 3
+  preparation: torn
+
+tomato_pasta_butter:
+  recipe: tomato_pasta
+  ingredient: butter
+  sequence: 4
+  preparation: softened
+
+honey_toast_honey:
+  recipe: honey_toast
+  ingredient: honey
+  sequence: 1
+  preparation: drizzled
+
+honey_toast_bread:
+  recipe: honey_toast
+  ingredient: bread
+  sequence: 2
+  preparation: toasted

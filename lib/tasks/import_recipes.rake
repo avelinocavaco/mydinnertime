@@ -6,10 +6,25 @@
 #   rails import:recipes FILE=... LIMIT=100        # import first N recipes (for testing)
 #
 require_relative "../ingredient_parser"
+require "cgi"
+require "uri"
 
 namespace :import do
   desc "Import recipes from a JSON file into the database"
   task recipes: :environment do
+    extract_image_url = lambda do |raw_image|
+      image = raw_image.to_s.strip
+      next if image.blank?
+
+      begin
+        uri = URI.parse(image)
+        nested_url = CGI.parse(uri.query.to_s)["url"]&.first
+        nested_url.present? ? nested_url : image
+      rescue URI::InvalidURIError
+        image
+      end
+    end
+
     file_path = ENV.fetch("FILE", Rails.root.join("db/seeds/recipes-en.json"))
     limit     = ENV["LIMIT"]&.to_i
 
@@ -48,7 +63,7 @@ namespace :import do
           cuisine:    data["cuisine"].presence,
           category:   data["category"].presence,
           author:     data["author"].presence,
-          image_url:  data["image"].presence
+          image_url:  extract_image_url.call(data["image"])
         )
 
         ingredients = Array(data["ingredients"]).compact.reject(&:blank?)

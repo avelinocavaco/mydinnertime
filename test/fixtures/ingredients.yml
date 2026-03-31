@@ -1,7 +1,20 @@
-# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+tomato:
+  name: tomato
 
-one:
-  name: MyString
+garlic:
+  name: garlic
 
-two:
-  name: MyString
+chicken:
+  name: chicken
+
+basil:
+  name: basil
+
+butter:
+  name: butter
+
+honey:
+  name: honey
+
+bread:
+  name: bread

@@ -32,4 +32,19 @@ class HomeControllerTest < ActionDispatch::IntegrationTest
     assert_includes @response.body, '"name":"tomato","selected":true'
     assert_includes @response.body, '"name":"garlic","selected":false'
   end
+
+  test "should render ranked recipe cards" do
+    get root_url, params: {
+      ingredients: ["tomato", "garlic", "chicken"],
+      ingredient_selected: ["true", "true", "true"]
+    }
+
+    assert_response :success
+    assert_select ".recipe-card", 3
+    assert_select ".recipe-image", 3
+    assert_select ".recipe-badge", text: /Rating/
+
+    titles = css_select(".recipe-card h3").map(&:text)
+    assert_equal ["Tomato Soup", "Garlic Chicken Skillet", "Tomato Garlic Pasta"], titles
+  end
 end

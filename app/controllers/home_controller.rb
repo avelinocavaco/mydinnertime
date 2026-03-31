@@ -18,5 +18,8 @@ class HomeController < ApplicationController
         selected: raw_selected[index] != "false"
       }
     end
+
+    @selected_ingredient_names = @ingredients.filter_map { |ingredient| ingredient[:name].downcase if ingredient[:selected] }
+    @recipes = Recipe.rank_for_ingredients(@selected_ingredient_names)
   end
 end

@@ -49,7 +49,40 @@
 
         <section class="panel">
           <h2>Recipes</h2>
-          <div class="results-placeholder">Results area</div>
+          <% if @recipes.empty? %>
+            <div class="results-placeholder">Recipe cards will appear here after search.</div>
+          <% else %>
+            <div class="recipe-list">
+              <% @recipes.each do |result| %>
+                <article class="recipe-card">
+                  <img
+                    src="<%= result.recipe.image_url %>"
+                    alt="<%= result.recipe.title %>"
+                    class="recipe-image"
+                  >
+
+                  <div class="recipe-body">
+                    <div class="recipe-meta">
+                      <h3><%= result.recipe.title %></h3>
+
+                      <div class="recipe-badges">
+                        <span class="recipe-badge"><%= result.matched_count %> match<%= "es" unless result.matched_count == 1 %></span>
+                        <span class="recipe-badge">Rating <%= number_with_precision(result.recipe.ratings || 0, precision: 1) %></span>
+                      </div>
+                    </div>
+
+                    <div class="recipe-ingredients">
+                      <% result.ingredients.each do |item| %>
+                        <span class="recipe-ingredient <%= "is-match" if @selected_ingredient_names.include?(item.ingredient.name) %>">
+                          <%= item.ingredient.name %>
+                        </span>
+                      <% end %>
+                    </div>
+                  </div>
+                </article>
+              <% end %>
+            </div>
+          <% end %>
         </section>
     <% end %>
   </div>
