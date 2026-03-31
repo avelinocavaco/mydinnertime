@@ -1,0 +1,56 @@
+<% content_for :title, "Mydinnertime" %>
+
+<section class="home-page">
+  <div class="home-shell" data-controller="ingredient-tags" data-ingredient-tags-initial-tags-value="<%= json_escape(@ingredients.to_json) %>">
+    <header class="hero panel">
+        <div>
+          <p class="panel-label">Recipe matching by ingredients</p>
+          <h1>MyDinnerTime</h1>
+        </div>
+        <div class="hero-badge">
+          <span>Selected ingredients</span>
+          <strong data-ingredient-tags-target="count">0</strong>
+        </div>
+      </header>
+
+      <%= form_with url: root_path, method: :get, class: "home-content", data: { ingredient_tags_target: "form" } do %>
+        <section class="panel">
+          <label for="ingredients-input" class="field-label">Ingredients</label>
+          <p class="field-help">Type at least 3 characters. Use Tab or comma to add an ingredient, then press Enter to search.</p>
+          <div class="tag-field" data-action="click->ingredient-tags#focusInput">
+            <div class="chips" data-ingredient-tags-target="chips"></div>
+            <input
+              id="ingredients-input"
+              class="tag-input"
+              type="text"
+              placeholder="e.g. tomato, garlic, chicken"
+              minlength="3"
+              autocomplete="off"
+              data-ingredient-tags-target="input"
+              data-action="keydown->ingredient-tags#handleKeydown blur->ingredient-tags#handleBlur"
+            >
+          </div>
+
+          <div class="actions">
+            <button type="button" class="action-button clear-button" data-action="click->ingredient-tags#clearAll">
+              Clear all
+            </button>
+
+            <button
+              type="submit"
+              class="action-button search-button"
+              data-ingredient-tags-target="submit"
+              <%= "disabled" if @ingredients.empty? %>
+            >
+              Search Recipe
+            </button>
+          </div>
+        </section>
+
+        <section class="panel">
+          <h2>Recipes</h2>
+          <div class="results-placeholder">Results area</div>
+        </section>
+    <% end %>
+  </div>
+</section>

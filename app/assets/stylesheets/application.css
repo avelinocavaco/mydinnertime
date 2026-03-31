@@ -1,10 +1,131 @@
-/*
- * This is a manifest file that'll be compiled into application.css.
- *
- * With Propshaft, assets are served efficiently without preprocessing steps. You can still include
- * application-wide styles in this file, but keep in mind that CSS precedence will follow the standard
- * cascading order, meaning styles declared later in the document or manifest will override earlier ones,
- * depending on specificity.
- *
- * Consider organizing styles into separate files for maintainability.
- */
+:root {
+  --navy: #0f2240;
+  --muted: #6b7f9e;
+  --border: #c8d6ea;
+}
+
+.home-page { min-height: 100vh; padding: 1rem; background: linear-gradient(180deg, #fff8ef 0%, #fff4e8 45%, #fdfaf5 100%); }
+.home-shell { max-width: 1140px; margin: 0 auto; }
+.home-content { display: grid; gap: 1.25rem; }
+
+.panel {
+  padding: 1.25rem;
+  border: 1px solid #d9dee8;
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.92);
+  box-shadow: 0 10px 24px rgba(15, 23, 42, 0.08);
+}
+
+.hero,
+.actions,
+.chips,
+.tag-field { display: flex; }
+
+.hero {
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1.25rem;
+}
+
+.hero h1,
+.panel h2 { margin: 0; color: var(--navy); }
+.hero h1 { font-size: clamp(2rem, 4vw, 3rem); }
+.hero p,
+.panel p { margin: 0.35rem 0 0; color: var(--muted); }
+
+.panel-label,
+.field-label {
+  display: block;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.panel-label { margin: 0 0 0.5rem; font-size: 0.75rem; letter-spacing: 0.12em; color: #3b82f6; }
+.field-label { margin-bottom: 0.5rem; font-size: 0.9rem; color: #4b5e7b; }
+
+.hero-badge,
+.tag-field,
+.action-button,
+.results-placeholder { border-radius: 8px; }
+
+.hero-badge {
+  min-width: 140px;
+  padding: 0.9rem 1rem;
+  background: #f4f7fb;
+  text-align: center;
+}
+
+.hero-badge span { display: block; font-size: 0.72rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); }
+.hero-badge strong { display: block; margin-top: 0.25rem; font-size: 2rem; color: var(--navy); }
+
+.tag-field {
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
+  min-height: 56px;
+  padding: 0.75rem;
+  border: 1px solid var(--border);
+  background: #fff;
+  cursor: text;
+}
+
+.chips { flex-wrap: wrap; gap: 0.5rem; align-items: center; }
+.actions { justify-content: flex-end; gap: 0.75rem; margin-top: 0.75rem; }
+.field-help { margin: 0; color: var(--muted); }
+
+.tag-input {
+  flex: 1 1 180px;
+  min-width: 180px;
+  padding: 0.25rem 0;
+  border: 0;
+  outline: 0;
+  background: transparent;
+  color: var(--navy);
+}
+
+.action-button {
+  min-width: 120px;
+  height: 44px;
+  border: 0;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.action-button:disabled { cursor: not-allowed; opacity: 0.5; }
+.clear-button { background: #e2e8f0; color: var(--navy); }
+.search-button { background: var(--navy); color: #fff; }
+
+.results-placeholder {
+  min-height: 160px;
+  margin-top: 0.75rem;
+  padding: 1.5rem;
+  border: 1px dashed var(--border);
+  background: #f8fbff;
+  color: var(--muted);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.4rem 0.8rem;
+  border: 1px solid #b9e0ff;
+  border-radius: 6px;
+  background: #eef8ff;
+  color: #2563eb;
+  cursor: pointer;
+  user-select: none;
+}
+
+.chip.is-selected { background: #dff1ff; color: #1d4ed8; font-weight: 600; }
+.chip-remove { padding: 0; border: 0; background: transparent; color: inherit; cursor: pointer; }
+
+@media (max-width: 700px) {
+  .hero { flex-direction: column; align-items: stretch; }
+}
